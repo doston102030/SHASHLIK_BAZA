@@ -31,6 +31,7 @@ export default function Sidebar({ activePage, onPageChange, isOpen, allowedPages
       className="sidebar-transition"
       style={{
         width: isOpen ? 196 : 56,
+        height: "100%",
         background: theme.sidebar,
         borderRight: `1px solid ${theme.sidebarBorder}`,
         display: "flex",
