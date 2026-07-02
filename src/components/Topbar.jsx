@@ -1,8 +1,8 @@
-import { Sun, Moon, RefreshCw } from "lucide-react";
+import { Sun, Moon, RefreshCw, Menu } from "lucide-react";
 import { useTheme, colors } from "../context/ThemeContext";
 import { useLanguage } from "../context/LanguageContext";
 
-export default function Topbar({ title }) {
+export default function Topbar({ title, onMenuClick, isMobile }) {
   const { theme, isDark, toggleTheme } = useTheme();
   const { script, toggleScript } = useLanguage();
 
@@ -15,27 +15,58 @@ export default function Topbar({ title }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "0 32px",
+        padding: isMobile ? "0 14px" : "0 32px",
         flexShrink: 0,
         boxShadow: "0 1px 0 rgba(0,0,0,0.02), 0 4px 16px rgba(0,0,0,0.02)",
         zIndex: 10,
+        gap: 12,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, margin: 0, color: theme.text, letterSpacing: -0.4 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+        <button
+          className="icon-btn"
+          onClick={onMenuClick}
+          title="Menyu"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 12,
+            border: `2px solid ${theme.inputBorder}`,
+            background: theme.input,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Menu size={18} color={colors.blue} />
+        </button>
+        <h1
+          style={{
+            fontSize: isMobile ? 17 : 24,
+            fontWeight: 800,
+            margin: 0,
+            color: theme.text,
+            letterSpacing: -0.4,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
           {title}
         </h1>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 16, flexShrink: 0 }}>
         {/* Yangilash */}
         <button
           className="icon-btn"
           onClick={() => window.location.reload()}
           title="Yangilash"
           style={{
-            width: 46,
-            height: 46,
+            width: isMobile ? 38 : 46,
+            height: isMobile ? 38 : 46,
             borderRadius: 14,
             border: `2px solid ${theme.inputBorder}`,
             background: theme.input,
@@ -54,9 +85,9 @@ export default function Topbar({ title }) {
           onClick={toggleScript}
           title={script === "lotin" ? "Kirillchaga o'tish" : "Lotinchaga o'tish"}
           style={{
-            height: 46,
-            minWidth: 46,
-            padding: "0 14px",
+            height: isMobile ? 38 : 46,
+            minWidth: isMobile ? 38 : 46,
+            padding: isMobile ? "0 10px" : "0 14px",
             borderRadius: 14,
             border: `2px solid ${theme.inputBorder}`,
             background: theme.input,
@@ -79,8 +110,8 @@ export default function Topbar({ title }) {
           onClick={toggleTheme}
           title={isDark ? "Light mode" : "Dark mode"}
           style={{
-            width: 46,
-            height: 46,
+            width: isMobile ? 38 : 46,
+            height: isMobile ? 38 : 46,
             borderRadius: 14,
             border: `2px solid ${theme.inputBorder}`,
             background: theme.input,

@@ -41,6 +41,7 @@ function AppContent() {
   // ── State (localStorage'da saqlanadi — tok/internet uzilib qolsa ham ma'lumot yo'qolmaydi) ──
   const [activePage, setActivePage] = usePersistedState("activePage", "dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= 900);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
   const [products, setProducts] = usePersistedState("products", INITIAL_PRODUCTS);
   const [warehouse, setWarehouse] = usePersistedState("warehouse", INITIAL_WAREHOUSE);
   const [branchStock, setBranchStock] = usePersistedState("branchStock", INITIAL_BRANCH_STOCK);
@@ -96,6 +97,7 @@ function AppContent() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 900) setSidebarOpen(false);
+      setIsMobile(window.innerWidth < 640);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -172,23 +174,42 @@ function AppContent() {
         transition: "background 0.35s, color 0.35s",
       }}
     >
+      {/* Mobil overlay (sidebar ochiq bo'lganda fonni qorong'ulashtirib, tashqarisiga bosilsa yopadi) */}
+      {isMobile && sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 15 }}
+        />
+      )}
+
       {/* Sidebar */}
-      <Sidebar
-        activePage={activePage}
-        onPageChange={setActivePage}
-        isOpen={sidebarOpen}
-        allowedPages={allowedPages}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-      />
+      <div
+        style={
+          isMobile
+            ? { position: "fixed", top: 0, bottom: 0, left: 0, zIndex: 20, transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.28s cubic-bezier(.4,0,.2,1)" }
+            : undefined
+        }
+      >
+        <Sidebar
+          activePage={activePage}
+          onPageChange={(page) => {
+            setActivePage(page);
+            if (isMobile) setSidebarOpen(false);
+          }}
+          isOpen={isMobile ? true : sidebarOpen}
+          allowedPages={allowedPages}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      </div>
 
       {/* Main Content */}
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
         {/* Top Bar */}
-        <Topbar title={getPageTitle()} />
+        <Topbar title={getPageTitle()} onMenuClick={() => setSidebarOpen((v) => !v)} isMobile={isMobile} />
 
         {/* Page Content */}
-        <div style={{ flex: 1, overflow: "auto", padding: 28 }}>
+        <div style={{ flex: 1, overflow: "auto", padding: isMobile ? 14 : 28 }}>
           {activePage === "dashboard"  && allowedPages.includes("dashboard")  && <Dashboard {...sharedProps} />}
           {activePage === "supplier"   && allowedPages.includes("supplier")   && <Supplier {...sharedProps} />}
           {activePage === "warehouse"   && allowedPages.includes("warehouse")   && <Warehouse {...sharedProps} />}
