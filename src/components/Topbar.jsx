@@ -22,14 +22,14 @@ export default function Topbar({ title, onMenuClick, isMobile }) {
         gap: 12,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 12, minWidth: 0, flex: "1 1 auto" }}>
         <button
           className="icon-btn"
           onClick={onMenuClick}
           title="Menyu"
           style={{
-            width: 40,
-            height: 40,
+            width: isMobile ? 36 : 40,
+            height: isMobile ? 36 : 40,
             borderRadius: 12,
             border: `2px solid ${theme.inputBorder}`,
             background: theme.input,
@@ -44,7 +44,7 @@ export default function Topbar({ title, onMenuClick, isMobile }) {
         </button>
         <h1
           style={{
-            fontSize: isMobile ? 17 : 24,
+            fontSize: isMobile ? 15 : 24,
             fontWeight: 800,
             margin: 0,
             color: theme.text,
@@ -52,32 +52,35 @@ export default function Topbar({ title, onMenuClick, isMobile }) {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
+            minWidth: 0,
           }}
         >
           {title}
         </h1>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 16, flexShrink: 0 }}>
-        {/* Yangilash */}
-        <button
-          className="icon-btn"
-          onClick={() => window.location.reload()}
-          title="Yangilash"
-          style={{
-            width: isMobile ? 38 : 46,
-            height: isMobile ? 38 : 46,
-            borderRadius: 14,
-            border: `2px solid ${theme.inputBorder}`,
-            background: theme.input,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <RefreshCw size={20} color={colors.blue} />
-        </button>
+      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 6 : 16, flexShrink: 0 }}>
+        {/* Yangilash (mobilda joy tejash uchun yashiriladi) */}
+        {!isMobile && (
+          <button
+            className="icon-btn"
+            onClick={() => window.location.reload()}
+            title="Yangilash"
+            style={{
+              width: 46,
+              height: 46,
+              borderRadius: 14,
+              border: `2px solid ${theme.inputBorder}`,
+              background: theme.input,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <RefreshCw size={20} color={colors.blue} />
+          </button>
+        )}
 
         {/* Til (lotin/kirill) toggle */}
         <button
