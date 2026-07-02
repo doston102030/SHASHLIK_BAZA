@@ -61,7 +61,7 @@ export default function Sidebar({ activePage, onPageChange, isOpen, allowedPages
       </div>
 
       {/* Navigation */}
-      <nav style={{ flex: 1, padding: "12px 8px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 20 }}>
+      <nav style={{ flex: 1, padding: "12px 8px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 8 }}>
         {visibleNavItems.map((item) => {
           const isActive = activePage === item.id;
           const IconComponent = item.icon;
