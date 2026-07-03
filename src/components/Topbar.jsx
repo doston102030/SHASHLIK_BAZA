@@ -23,25 +23,27 @@ export default function Topbar({ title, onMenuClick, isMobile }) {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 12, minWidth: 0, flex: "1 1 auto" }}>
-        <button
-          className="icon-btn"
-          onClick={onMenuClick}
-          title="Menyu"
-          style={{
-            width: isMobile ? 36 : 40,
-            height: isMobile ? 36 : 40,
-            borderRadius: 12,
-            border: `2px solid ${theme.inputBorder}`,
-            background: theme.input,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-          }}
-        >
-          <Menu size={18} color={colors.blue} />
-        </button>
+        {isMobile && (
+          <button
+            className="icon-btn"
+            onClick={onMenuClick}
+            title="Menyu"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 12,
+              border: `2px solid ${theme.inputBorder}`,
+              background: theme.input,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Menu size={18} color={colors.blue} />
+          </button>
+        )}
         <h1
           style={{
             fontSize: isMobile ? 15 : 24,
